@@ -1,0 +1,38 @@
+---
+- name: Configuring WG
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install WireGuard
+      package:
+        name: "wireguard"
+        state: latest
+    - name: Generate WireGuard private and public keys
+      shell: umask 077 && wg genkey | tee /etc/wireguard/privatekey | wg pubkey > /etc/wireguard/publickey
+      args:
+        creates: /etc/wireguard/privatekey
+
+    - name: "get wg priv"
+      shell: cat /etc/wireguard/privatekey
+      register: wg_priv
+
+    - name: "get wg pub"
+      shell: cat /etc/wireguard/publickey
+      register: wg_pub
+
+    - name: Setting host facts using complex arguments
+      ansible.builtin.set_fact:
+        wg_pub:  "{{ wg_pub.stdout}}"
+        wg_priv: "{{ wg_priv.stdout}}"
+
+    - name: Template a WG config
+      ansible.builtin.template:
+        src: exampl.conf.j2
+        dest: /etc/wireguard/config
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Print all available facts
+      ansible.builtin.debug:
+        var: ansible_facts

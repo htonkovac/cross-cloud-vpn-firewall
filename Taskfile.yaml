@@ -13,6 +13,7 @@ tasks:
     desc: "run tf apply"
     cmds:
       - "terraform -chdir=terraform apply --auto-approve"
+  
   vm_a:
     desc: "ssh into vm A"
     cmds:
@@ -28,4 +29,15 @@ tasks:
     cmds:
       - "terraform -chdir=terraform destroy --auto-approve"
 
-      
+  gen_ansible_inventory:
+    desc: generate ansible inventory
+    generates:
+      - "./inventory"
+    cmds:
+      - echo "{{.VM_A_IP}}" > inventory
+      - echo "{{.VM_B_IP}}" >> inventory
+
+  ansible:
+    desc: run ansible
+    cmds:
+      - ansible-playbook -u adminuser -i inventory --flush-cache --private-key ./ssh-keys/mykey ansible/task.yaml

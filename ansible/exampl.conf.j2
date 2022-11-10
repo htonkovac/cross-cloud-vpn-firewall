@@ -1,0 +1,15 @@
+
+[Interface]
+PrivateKey = {{ wg_priv }}
+ListenPort = 51820
+
+
+{% for host in groups['all'] %}
+    {% if ("{{ hostvars[host]['wg_pub'] }}" != "{{ wg_pub }}") %} doesn't work :(
+[Peer]
+PublicKey  = {{ hostvars[host]['wg_pub']  }}
+Endpoint   = 0.0.0.0:51820
+AllowedIPs = 0.0.0.0/0
+
+{% endif %}
+{% endfor %}

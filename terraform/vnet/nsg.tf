@@ -24,6 +24,20 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
 
+   security_rule {
+    name                       = "wireguard"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Udp"
+    source_port_range          = "*"
+    destination_port_range     = "51820"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+
+
 }
 
 resource "azurerm_subnet_network_security_group_association" "subnet_specific" {
