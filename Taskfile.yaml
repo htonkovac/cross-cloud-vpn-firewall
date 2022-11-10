@@ -22,3 +22,10 @@ tasks:
     desc: "ssh into vm B"
     cmds:
       - ssh -v -o StrictHostKeyChecking=no -i ./ssh-keys/mykey adminuser@{{.VM_B_IP}}
+
+  tf_destroy:
+    desc: "run tf destroy"
+    cmds:
+      - "terraform -chdir=terraform destroy --auto-approve"
+
+      
