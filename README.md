@@ -2,6 +2,14 @@
 
 This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN.  
 
+...
+
+ip_forward
+nsg
+iptables
+route tables
+
+-systemd?
 ![image](docs/image.png)
 ___
 ## Sources
@@ -14,3 +22,5 @@ ___
 6. https://stackoverflow.com/questions/40086613/ansible-jinja2-string-comparison # "You don't need quotes and braces to refer to variables inside expressions"
 7. https://docs.ansible.com/ansible/latest/user_guide/playbooks_vars_facts.html
 8. https://github.com/tommywalkie/excalidraw-cli
+9. https://ro-che.info/articles/2021-02-27-linux-routing
+

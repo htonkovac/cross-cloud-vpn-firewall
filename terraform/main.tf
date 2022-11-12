@@ -36,6 +36,7 @@ module "vnetB" {
   } }
 }
 
+
 module "vmB" {
   source                   = "./ubuntu-ngnix-vm"
   resource_group_name      = azurerm_resource_group.rg.name
@@ -43,4 +44,43 @@ module "vmB" {
   name                     = "vm-B"
   subnet_id                = module.vnetB.subnets["subnet-B1"].id
   ssh_public_key_file_path = "${path.module}/../ssh-keys/mykey.pub"
+}
+
+module "extra_vms_in_A" {
+  count = 1
+  source                   = "./ubuntu-ngnix-vm"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  name                     = "vm-A${count.index}"
+  subnet_id                = module.vnetA.subnets["subnet-A1"].id
+  ssh_public_key_file_path = "${path.module}/../ssh-keys/mykey.pub"
+}
+
+
+module "extra_vms_in_B" {
+  count = 2
+  source                   = "./ubuntu-ngnix-vm"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  name                     = "vm-B${count.index}"
+  subnet_id                = module.vnetB.subnets["subnet-B1"].id
+  ssh_public_key_file_path = "${path.module}/../ssh-keys/mykey.pub"
+}
+
+resource "azurerm_route" "atob" {
+  name                = "atob"
+  resource_group_name = azurerm_resource_group.rg.name
+  route_table_name    = module.vnetA.default_route_table_name
+  address_prefix      = module.vnetB.address_space[0]
+  next_hop_type       = "VirtualAppliance"
+  next_hop_in_ip_address = module.vmA.private_ip
+}
+
+resource "azurerm_route" "btoa" {
+  name                = "btoa"
+  resource_group_name      = azurerm_resource_group.rg.name
+  route_table_name    = module.vnetB.default_route_table_name
+  address_prefix      = module.vnetA.address_space[0]
+  next_hop_type       = "VirtualAppliance"
+  next_hop_in_ip_address = module.vmB.private_ip
 }

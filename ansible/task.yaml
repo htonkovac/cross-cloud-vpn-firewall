@@ -41,6 +41,6 @@
 
       # Note that diz command will add and update peers but will not remove peers.
     - name: Reload configuration files without disrupting active sessions #as per `man 8 wg-quick`
-      shell: wg addconf wg0 <(wg-quick strip wg0)
+      shell: wg syncconf wg0 <(wg-quick strip wg0)
       args:
         executable: /bin/bash

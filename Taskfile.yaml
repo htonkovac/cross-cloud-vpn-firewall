@@ -14,6 +14,11 @@ tasks:
     cmds:
       - "terraform -chdir=terraform apply --auto-approve"
   
+  tf_init:
+    desc: "run tf apply"
+    cmds:
+      - "terraform -chdir=terraform init"
+
   vm_a:
     desc: "ssh into vm A"
     cmds:
@@ -28,6 +33,7 @@ tasks:
     desc: "run tf destroy"
     cmds:
       - "terraform -chdir=terraform destroy --auto-approve"
+      - "rm inventory"
 
   gen_ansible_inventory:
     desc: generate ansible inventory
@@ -40,4 +46,4 @@ tasks:
   ansible:
     desc: run ansible
     cmds:
-      - ansible-playbook -u adminuser -i inventory --flush-cache --private-key ./ssh-keys/mykey ansible/task.yaml
+      - ansible-playbook -u adminuser -i inventory --private-key ./ssh-keys/mykey ansible/task.yaml
