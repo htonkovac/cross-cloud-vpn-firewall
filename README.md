@@ -1,6 +1,7 @@
 # cross-cloud-vpn-firewall
 
-This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN.
+This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN.  
+
 ![image](docs/image.png)
 ___
 ## Sources
