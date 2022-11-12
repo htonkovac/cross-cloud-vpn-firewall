@@ -5,11 +5,11 @@ ListenPort = 51820
 
 
 {% for host in groups['all'] %}
-    {% if ("{{ hostvars[host]['wg_pub'] }}" != "{{ wg_pub }}") %} doesn't work :(
+{% if hostvars[host]['wg_pub'] != wg_pub %}
 [Peer]
 PublicKey  = {{ hostvars[host]['wg_pub']  }}
-Endpoint   = 0.0.0.0:51820
-AllowedIPs = 0.0.0.0/0
+Endpoint   = {{ hostvars[host]['inventory_hostname'] }}:51820
+AllowedIPs = {{ hostvars[host]['ansible_default_ipv4']['address'] }}/32
 
 {% endif %}
 {% endfor %}

@@ -7,6 +7,7 @@
       package:
         name: "wireguard"
         state: latest
+
     - name: Generate WireGuard private and public keys
       shell: umask 077 && wg genkey | tee /etc/wireguard/privatekey | wg pubkey > /etc/wireguard/publickey
       args:
@@ -20,7 +21,7 @@
       shell: cat /etc/wireguard/publickey
       register: wg_pub
 
-    - name: Setting host facts using complex arguments
+    - name: Setting host facts so they can be used cross-host in jinja2 templates
       ansible.builtin.set_fact:
         wg_pub:  "{{ wg_pub.stdout}}"
         wg_priv: "{{ wg_priv.stdout}}"
@@ -28,11 +29,18 @@
     - name: Template a WG config
       ansible.builtin.template:
         src: exampl.conf.j2
-        dest: /etc/wireguard/config
+        dest: /etc/wireguard/wg0.conf
         owner: root
         group: root
         mode: '0644'
 
-    - name: Print all available facts
-      ansible.builtin.debug:
-        var: ansible_facts
+    - name: Setup WireGuard interface wg0
+      shell: wg-quick up wg0 && touch /etc/wireguard/wg0.created
+      args:
+        creates: /etc/wireguard/wg0.created
+
+      # Note that diz command will add and update peers but will not remove peers.
+    - name: Reload configuration files without disrupting active sessions #as per `man 8 wg-quick`
+      shell: wg addconf wg0 <(wg-quick strip wg0)
+      args:
+        executable: /bin/bash
