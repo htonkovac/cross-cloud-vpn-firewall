@@ -2,7 +2,9 @@
 
 This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN.
 ![image](docs/image.png)
-Sources
+___
+## Sources
+
 1. https://tailscale.com/blog/how-nat-traversal-works/
 2. https://github.com/facebookincubator/katran
 3. https://www.wireguard.com/
