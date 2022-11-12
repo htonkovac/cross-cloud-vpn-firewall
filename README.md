@@ -4,10 +4,10 @@ This repo deploys 2 (simple) cloud environments and connects them with a Wiregua
 
 ...
 
-ip_forward
+ip_forward # needs to be set
 nsg
 iptables
-route tables
+route tables # in my initial setup this wasn't working - after tearing down everything and rebuilding the routes were autocreated by wg-quick
 
 -systemd?
 ![image](docs/image.png)

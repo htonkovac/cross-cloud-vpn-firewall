@@ -2,9 +2,8 @@
 [Interface]
 PrivateKey = {{ wg_priv }}
 ListenPort = 51820
-#PostUp = iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT; iptables -A FORWARD -i eth0 -o wg0 -j ACCEPT;
-# also had to run sudo ip route add 10.100.0.0/24 dev wg0 scope link to modify royte tables
-
+PostUp = iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT; iptables -A FORWARD -i eth0 -o wg0 -j ACCEPT;
+PostDown = iptables -D FORWARD -i wg0 -o eth0 -j ACCEPT; iptables -D FORWARD -i eth0 -o wg0 -j ACCEPT;
 
 {% for host in groups['all'] %}
 {% if hostvars[host]['wg_pub'] != wg_pub %}

@@ -44,6 +44,10 @@ tasks:
 
   gen_ansible_inventory:
     desc: generate ansible inventory
+    env:
+      VM_A_IP: {sh: terraform -chdir=terraform output -raw vm_a_ip}
+      VM_B_IP: {sh: terraform -chdir=terraform output -raw vm_b_ip}
+
     generates:
       - "./inventory"
     cmds:

@@ -3,6 +3,14 @@
   hosts: all
   become: yes
   tasks:
+    - name: enable forwarding of ip packets
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: yes
+        state: present
+        reload: yes
+
     - name: Install WireGuard
       package:
         name: "wireguard"
