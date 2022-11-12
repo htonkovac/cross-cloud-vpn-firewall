@@ -4,6 +4,13 @@ vars:
   VM_B_IP: {sh: terraform -chdir=terraform output -raw vm_b_ip}
 
 tasks:
+  default:
+    cmds:
+    - task: tf_init
+    - task: tf
+    - task: gen_ansible_inventory
+    - task: ansible
+    
   generate_new_ssh_key:
     desc: "Generate a new SSH key"
     cmds:
