@@ -1,4 +1,5 @@
 #!/bin/bash
+# Commiting often >>> commit message quality
 wget https://raw.githubusercontent.com/leighmcculloch/looks.wtf/master/looks.yml -O looks.yml
 LEN=$(cat looks.yml | yq e '. | length')
 NUMBER=$(($RANDOM % $LEN ))
