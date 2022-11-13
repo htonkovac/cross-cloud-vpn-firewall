@@ -30,3 +30,4 @@ override.tf.json
 .tfout*
 ssh-keys
 inventory
+looks.yml

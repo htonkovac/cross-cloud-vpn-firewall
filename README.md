@@ -1,13 +1,15 @@
 # cross-cloud-vpn-firewall
 
-This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN.  
+This repo deploys 2 (simple) cloud environments and connects them with a Wireguard VPN. Cloud resources are provisioned with terraform. Both environments are hosted in Azure cloud and consist of:
+- a VNET with 1 subnet
+- a linux machine acting as the "VPN hub"
+- few other machines for testing
 
-...
-
-ip_forward # needs to be set
-nsg
-iptables
-route tables # in my initial setup this wasn't working - after tearing down everything and rebuilding the routes were autocreated by wg-quick
+To get a linux machine acting as a "VPN hub" I've used ansible. Key takeaways:
+- ip_forward needs to be set (was on by default)
+- nsg and route tables in azure need to be set properly (allow 10.0.0.0/8 traffic and route traffic to the VPN hub)
+- wg-quick utility can help with setting up the proper routes # in my initial setup this wasn't working - after tearing down everything and rebuilding the routes were autocreated by wg-quick
+- ip tables needs to have forwardin rules set to accept packets.
 
 -systemd?
 ![image](docs/image.png)
